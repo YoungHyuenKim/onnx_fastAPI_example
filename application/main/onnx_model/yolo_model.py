@@ -9,7 +9,6 @@ from application.main.onnx_model.util import *
 yolo_onnx_file = "application\static\onnx_file\yolov5s.onnx"
 
 
-
 class YoloOnnxModel(BaseModel):
     def __init__(self, model_file, input_size=(640, 640), conf_thd=0.3, iou_thd=0.5):
         super(YoloOnnxModel, self).__init__(model_file, input_size)
@@ -34,12 +33,11 @@ class YoloOnnxModel(BaseModel):
 
         inputs = self.preprocess(input_img)
         outputs = self.model.run(self.output_nodes, inputs)  # outputs: 1 x N x 85(xyxy conf + class conf(80))
-        outputs = self.postprocess(outputs[0], origin_shape=(origin_w, origin_h))
-
+        outputs = self.postprocess(outputs[0][0], origin_shape=(origin_w, origin_h))
         return outputs
 
     def postprocess(self, model_outputs, origin_shape: Tuple[int, int]):
-        origin_h, origin_w = origin_shape
+        origin_w, origin_h = origin_shape
         nms_output = nms(model_outputs, self.conf_thd, self.iou_thd)
 
         nms_output[:, 0] *= origin_w / self.input_width
