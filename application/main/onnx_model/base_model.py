@@ -28,7 +28,7 @@ class BaseModel(ABC):
         pass
 
     @abc.abstractmethod
-    def run(self, input_img: np.ndarray):
+    def run(self, input_img: np.ndarray, *args,**kwargs):
         pass
 
     @abc.abstractmethod

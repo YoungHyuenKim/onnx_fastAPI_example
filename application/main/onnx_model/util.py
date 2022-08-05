@@ -96,9 +96,9 @@ def nms(model_outputs, conf_thd=0.3, iou_thd=0.5):
     offset_by_classes = class_idx * max_wh
     shift_object = np.concatenate([box+offset_by_classes, score, class_idx], axis=1)
 
-    shift_nms_object = basic_nms(shift_object, iou_thd=iou_thd, method="soft")
-    restore_object = shift_nms_object - shift_nms_object[:, 5:] * max_wh # restore offset
-    return restore_object
+    nms_object = basic_nms(shift_object, iou_thd=iou_thd, method="soft")
+    nms_object[:,:4] = nms_object[:,:4] - nms_object[:, 5:] * max_wh # restore offset
+    return nms_object
 
 
 def draw_bboxes(img, bboxes, conf=None, label_idx=None, color=None, thickness=3):

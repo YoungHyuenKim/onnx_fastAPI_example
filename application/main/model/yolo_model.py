@@ -1,18 +1,14 @@
 from typing import List, Optional
 from pydantic import BaseModel
+from fastapi import FastAPI, File, UploadFile
 
 import cv2
 import numpy as np
 
 
 class YoloModel(BaseModel):
-    bytes_img: bytes
-    conf_thd: Optional[float] = None
-    iou_thd: Optional[float] = None
-
-    def bytes2img(self) -> np.ndarray:
-        nparr = np.frombuffer(self.bytes_img, np.uint8)
-        return cv2.imdecode(nparr)
+    conf_thd: Optional[float] = 0.3
+    iou_thd: Optional[float] = 0.3
 
 
 class DetectedObject(BaseModel):
@@ -21,7 +17,6 @@ class DetectedObject(BaseModel):
     conf: float
 
 
-class YoloRedictionResult(BaseModel):
+class YoloDetectionResult(BaseModel):
     number_objects: int
     objects: List[DetectedObject]
-
