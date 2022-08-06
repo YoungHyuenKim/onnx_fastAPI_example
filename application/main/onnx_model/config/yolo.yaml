@@ -1,0 +1,12 @@
+_version: 1
+input_height: 640
+input_nodes:
+- images
+input_width: 640
+label_file: main/onnx_model/config/yolo_label.yaml
+onnx_file: static/onnx_file/yolov5s.onnx
+output_nodes:
+- output
+param:
+  conf_threshold: 0.3
+  iou_threshold: 0.3
